@@ -1,41 +1,129 @@
 class Pokemon {
-  int numero;
-  String nome;
-  String tipo;
-  int nivel;
-  int hp_atual;
-  int hp_maximo;
-  bool capturado;
+  int _numero;
+  String _nome;
+  String _tipo;
+  int _nivel;
+  int _hp_atual;
+  int _hp_maximo;
+  bool _capturado;
 
   Pokemon({
-    required this.numero,
-    required this.nome,
-    required this.tipo,
-    required this.nivel,
-    required this.hp_atual,
-    required this.hp_maximo,
-    required this.capturado,
-  }) {
-    if (nivel < 1 || nivel > 100) {
+    required int numero,
+    required String nome,
+    required String tipo,
+    required int nivel,
+    required int hp_atual,
+    required int hp_maximo,
+    required bool capturado,
+  })  : _numero = numero,
+        _nome = nome,
+        _tipo = tipo,
+        _nivel = nivel,
+        _hp_atual = hp_atual,
+        _hp_maximo = hp_maximo,
+        _capturado = capturado {
+    if (_nivel < 1 || _nivel > 100) {
       throw ArgumentError("Nivel deve estar entre 1 e 100!");
     }
 
-    if (hp_maximo <= 0) {
+    if (_hp_maximo <= 0) {
       throw ArgumentError("Hp máximo não pode ser menor que 0!");
     }
 
-    if (hp_atual > hp_maximo) {
+    if (_hp_atual > _hp_maximo) {
       throw ArgumentError("Hp atual não pode ser maior que o hp máximo");
     }
   }
 
+  // Getters
+  int get numero => _numero;
+  String get nome => _nome;
+  String get tipo => _tipo;
+  int get nivel => _nivel;
+  int get hp_atual => _hp_atual;
+  int get hp_maximo => _hp_maximo;
+  bool get capturado => _capturado;
+
+  // Setters
+  set numero(int valor) => _numero = valor;
+  set nome(String valor) => _nome = valor;
+  set tipo(String valor) => _tipo = valor;
+
+  set nivel(int valor) {
+    if (valor < 1 || valor > 100) {
+      throw ArgumentError("Nivel deve estar entre 1 e 100!");
+    }
+    _nivel = valor;
+  }
+
+  set hp_maximo(int valor) {
+    if (valor <= 0) {
+      throw ArgumentError("Hp máximo não pode ser menor que 0!");
+    }
+    _hp_maximo = valor;
+  }
+
+  set hp_atual(int valor) {
+    if (valor > _hp_maximo) {
+      throw ArgumentError("Hp atual não pode ser maior que o hp máximo");
+    }
+    _hp_atual = valor;
+  }
+
+  set capturado(bool valor) => _capturado = valor;
+  
+  // Métodos
   void exibir_ficha() {
-    print('====== Pokemon: $nome #$numero ======');
-    print('Capturado: ${capturado ? "Sim" : "Não"}');
-    print('Tipo: $tipo');
-    print('Nível: $nivel');
-    print('Hp: $hp_atual/$hp_maximo');
+    print('====== Pokemon: $_nome #$_numero ======');
+    print('Capturado: ${_capturado ? "Sim" : "Não"}');
+    print('Tipo: $_tipo');
+    print('Nível: $_nivel');
+    print('Hp: $_hp_atual/$_hp_maximo');
     print(' ');
+  }
+
+  bool subir_nivel(int quantidade) {
+    if (quantidade < 0) {
+      print("Quantidade não pode ser negativa");
+      return false;
+    }
+
+    try {
+      nivel = _nivel + quantidade;
+    } catch (e) {
+      print("Falha ao subir nivel: $e");
+      return false;
+    }
+    return true;
+  }
+
+  bool receber_dano(int dano) {
+    if (dano < 0) {
+      print("Dano não pode ser negativo");
+      return false;
+    }
+
+    if (dano >= _hp_atual) {
+      _hp_atual = 0;
+    } else {
+      _hp_atual = _hp_atual - dano;
+    }
+    return true;
+  }
+
+  bool curar(int valor) {
+    if (valor < 0) {
+      print("Cura não pode ser negativa");
+      return false;
+    }
+
+    if (_hp_atual + valor >= _hp_maximo) {
+      _hp_atual = _hp_maximo;
+    } else {
+      _hp_atual = _hp_atual + valor;
+    }
+
+    return true;
   }
 }
 
@@ -69,6 +157,30 @@ void main(List<String> arguments) {
     hp_maximo: 10,
     capturado: true,
   );
+
+  psyduck.exibir_ficha();
+  mimikyu.exibir_ficha();
+  machop.exibir_ficha();
+
+  if (!psyduck.subir_nivel(2)) return;
+  if (!mimikyu.subir_nivel(5)) return;
+  // if (!psyduck.subir_nivel(101)) return; // <--- erro!
+  // if (!psyduck.subir_nivel(-1)) return; // <--- erro!
+
+  if (!psyduck.receber_dano(50)) return;
+  if (!mimikyu.receber_dano(2)) return;
+  if (!machop.receber_dano(5)) return;
+  // if (!machop.receber_dano(-1)) return; // <--- erro!
+
+  if (!psyduck.curar(20)) return;
+  if (!mimikyu.curar(3)) return;
+  if (!machop.curar(50)) return;
+  // if (!machop.curar(-1)) return; // <--- erro!
+  
+  print("===========================");
+  print("===========================");
+  print("===========================");
+  print("");
 
   psyduck.exibir_ficha();
   mimikyu.exibir_ficha();
