@@ -137,12 +137,12 @@ class Pokemon {
   void evoluir(){
 
     if(proxima_evolucao == null){
-      print('$nome não possui mais evoluções programadas.1');
+      print('$nome não possui mais evoluções programadas.');
       print('');
       return;
     }
 
-    if(_nivel <= nivel_evolucao){
+    if(_nivel < nivel_evolucao){
       print('$nome não consegue evoluir');
       print('Nível atual: $_nivel');
       print('Nível necessário: $nivel_evolucao');
@@ -231,16 +231,16 @@ void main(List<String> arguments) {
 
 
 
-// TESTE DE EVOLUÇÃO [Da questão 3]
+  // TESTE DE EVOLUÇÃO [Da questão 3]
 
-machop.exibir_ficha();
-machop.proxima_evolucao = "Machoke";
-machop.nivel_evolucao = 6;
+  machop.exibir_ficha();
+  machop.proxima_evolucao = "Machoke";
+  machop.nivel_evolucao = 7;
 
-machop.evoluir();
+  machop.evoluir();
 
-machop.subir_nivel(5);
-machop.evoluir();
+  machop.subir_nivel(6);
+  machop.evoluir();
 
-machop.exibir_ficha();
+  machop.exibir_ficha();
 }
