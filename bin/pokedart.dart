@@ -7,6 +7,10 @@ class Pokemon {
   int _hp_maximo;
   bool _capturado;
 
+  //Atributos para próxima evolução
+  String? proxima_evolucao;
+  int nivel_evolucao;
+
   Pokemon({
     required int numero,
     required String nome,
@@ -15,6 +19,8 @@ class Pokemon {
     required int hp_atual,
     required int hp_maximo,
     required bool capturado,
+    this.proxima_evolucao,  // coloquei aki
+    this.nivel_evolucao = 0, //coloquei aki tambem
   })  : _numero = numero,
         _nome = nome,
         _tipo = tipo,
@@ -34,6 +40,8 @@ class Pokemon {
       throw ArgumentError("Hp atual não pode ser maior que o hp máximo");
     }
   }
+
+  //QUESTÃO 1
 
   // Getters
   int get numero => _numero;
@@ -125,7 +133,42 @@ class Pokemon {
 
     return true;
   }
+  
+  void evoluir(){
+
+    if(proxima_evolucao == null){
+      print('$nome não possui mais evoluções programadas.1');
+      print('');
+      return;
+    }
+
+    if(_nivel <= nivel_evolucao){
+      print('$nome não consegue evoluir');
+      print('Nível atual: $_nivel');
+      print('Nível necessário: $nivel_evolucao');
+      print('');
+      return;
+    }
+
+    String nomeAntigo = _nome;
+
+    _nome = proxima_evolucao!;
+
+    proxima_evolucao = null;
+
+    _hp_maximo += 20;
+    _hp_atual = hp_maximo;
+
+    print('==== EVOLUÇÃO ! ====');
+    print('$nomeAntigo evoluiu para $nome');
+    print('Novo HP máximo: [$hp_maximo]');
+    print("====================");
+    print('');
+
+  }
+
 }
+
 
 void main(List<String> arguments) {
   var psyduck = Pokemon(
@@ -185,4 +228,19 @@ void main(List<String> arguments) {
   psyduck.exibir_ficha();
   mimikyu.exibir_ficha();
   machop.exibir_ficha();
+
+
+
+// TESTE DE EVOLUÇÃO [Da questão 3]
+
+machop.exibir_ficha();
+machop.proxima_evolucao = "Machoke";
+machop.nivel_evolucao = 6;
+
+machop.evoluir();
+
+machop.subir_nivel(5);
+machop.evoluir();
+
+machop.exibir_ficha();
 }
