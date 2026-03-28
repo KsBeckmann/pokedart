@@ -169,6 +169,55 @@ class Pokemon {
 
 }
 
+// QUESTÃO 4
+class Pokedex{
+  final List<Pokemon> _listaPokemons = [];
+
+
+  void adicionarPokemon(Pokemon p){
+    bool jaExiste = _listaPokemons.any((poke) => poke.numero == p.numero);
+
+    if(jaExiste){
+      print('O Pokemon ${p.nome} | #${p.numero} já tem na Pokedex');
+    }else{
+      _listaPokemons.add(p);
+      print('Pokemon ${p.nome} adicionado na Pokedex!!!');
+    }
+  }
+
+  Pokemon? buscarPorNumero(int numero){
+    try{
+      return _listaPokemons.firstWhere((poke) => poke.numero == numero);
+    }catch (e){
+      return null;
+    }
+  }
+
+  bool removerPokemonPorNumero(int numero){
+    int totalAntes = _listaPokemons.length;
+    _listaPokemons.removeWhere((poke) => poke.numero == numero);
+
+    bool removeu = _listaPokemons.length < totalAntes;
+    if(removeu){
+      print('Pokemon #$numero removido!!');
+    }else{
+      print('Pokemon #$numero não encontrado na Pokedex!!!');
+    }
+    return removeu;
+  }
+
+  void listarTodos(){
+    print('\n================= LISTA DE POKEMONS =================');
+    if(_listaPokemons.isEmpty){
+      print('A Pokedex está vazia!!!');
+    }else{
+      for(var p in _listaPokemons){
+        p.exibir_ficha();
+      }
+    }
+    print('=======================================================');
+  }
+}
 
 void main(List<String> arguments) {
   var psyduck = Pokemon(
@@ -243,4 +292,22 @@ void main(List<String> arguments) {
   machop.evoluir();
 
   machop.exibir_ficha();
+
+
+  // TESTE DA QUESTÃO 4
+  var minhaPokedex = Pokedex();
+
+  var p1 = Pokemon(numero: 1, nome: "Bulbasaur", tipo: "Planta", nivel: 5, hp_atual: 20, hp_maximo: 20, capturado: true);
+  var p2 = Pokemon(numero: 4, nome: "Charmander", tipo: "Fogo", nivel: 5, hp_atual: 18, hp_maximo: 18, capturado: true);
+  var p3 = Pokemon(numero: 7, nome: "Squirtle", tipo: "Água", nivel: 5, hp_atual: 22, hp_maximo: 22, capturado: true);
+  var p4 = Pokemon(numero: 25, nome: "Pikachu", tipo: "Elétrico", nivel: 10, hp_atual: 30, hp_maximo: 30, capturado: true);
+  var p5 = Pokemon(numero: 150, nome: "Mewtwo", tipo: "Psíquico", nivel: 70, hp_atual: 200, hp_maximo: 200, capturado: false);
+
+  minhaPokedex.adicionarPokemon(p1);
+  minhaPokedex.adicionarPokemon(p2);
+  minhaPokedex.adicionarPokemon(p3);
+  minhaPokedex.adicionarPokemon(p4);
+  minhaPokedex.adicionarPokemon(p5);
+
+  minhaPokedex.listarTodos();
 }
