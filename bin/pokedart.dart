@@ -13,6 +13,9 @@ class Pokemon {
   String? proxima_evolucao;
   int nivel_evolucao;
 
+  // Atributo energia (q7)
+  int energia;
+
   Pokemon({
     required int numero,
     required String nome,
@@ -23,6 +26,7 @@ class Pokemon {
     required bool capturado,
     this.proxima_evolucao,  // coloquei aki
     this.nivel_evolucao = 0, //coloquei aki tambem
+    this.energia = 0, // q7
   })  : _numero = numero,
         _nome = nome,
         _tipo = tipo,
@@ -256,6 +260,7 @@ class PokemonFogo extends Pokemon {
     required bool capturado,
     String? proxima_evolucao,
     int nivel_evolucao = 0,
+    int energia = 100, // q7
   }) : super(
     numero: numero,
     nome: nome,
@@ -266,6 +271,7 @@ class PokemonFogo extends Pokemon {
     capturado: capturado,
     proxima_evolucao: proxima_evolucao,
     nivel_evolucao: nivel_evolucao,
+    energia: energia,
   );
 
   @override
@@ -295,6 +301,7 @@ class PokemonAgua extends Pokemon {
     required bool capturado,
     String? proxima_evolucao,
     int nivel_evolucao = 0,
+    int energia = 100, // q7
   }) : super(
     numero: numero,
     nome: nome,
@@ -305,6 +312,7 @@ class PokemonAgua extends Pokemon {
     capturado: capturado,
     proxima_evolucao: proxima_evolucao,
     nivel_evolucao: nivel_evolucao,
+    energia: energia,
   );
 
   @override
@@ -334,6 +342,7 @@ class PokemonEletrico extends Pokemon {
     required bool capturado,
     String? proxima_evolucao,
     int nivel_evolucao = 0,
+    int energia = 100, // q7
   }) : super(
     numero: numero,
     nome: nome,
@@ -344,6 +353,7 @@ class PokemonEletrico extends Pokemon {
     capturado: capturado,
     proxima_evolucao: proxima_evolucao,
     nivel_evolucao: nivel_evolucao,
+    energia: energia,
   );
 
   @override
@@ -362,6 +372,92 @@ class PokemonEletrico extends Pokemon {
     print(' ');
   }
 }
+
+// QUESTÃO 7
+abstract class Habilidade {
+  String nome = "";
+  int custo_energia = 0;
+
+  Habilidade(this.nome, this.custo_energia);
+
+  void usar(Pokemon usuario, Pokemon alvo);
+}
+
+class ChoqueDoTrovao extends Habilidade {
+  ChoqueDoTrovao() : super("Choque do trovão", 5);
+
+  void usar(Pokemon usuario, Pokemon alvo) {
+    if(usuario.energia < custo_energia) {
+      print('Seu pokemon nao tem energia o suficiente');
+      return;
+    }
+
+    var dano = usuario.calcular_ataque_base() + 5;
+    var alvo_hp = alvo.hp_atual - dano;
+
+    print('Vida do alvo -> ${alvo.hp_atual}');
+    print('Dano -> $dano');
+
+    usuario.energia -= custo_energia;
+
+    if(alvo_hp < 0) {
+      alvo.hp_atual = 0;
+    } else {
+      alvo.hp_atual = alvo_hp;
+    }
+  }
+}
+
+class JatoDAgua extends Habilidade {
+  JatoDAgua() : super("Jato D'Agua", 3);
+
+  void usar(Pokemon usuario, Pokemon alvo) {
+    if(usuario.energia < custo_energia) {
+      print('Seu pokemon nao tem energia o suficiente');
+      return;
+    }
+
+    var dano = usuario.calcular_ataque_base() + 3;
+    var alvo_hp = alvo.hp_atual - dano;
+
+    print('Vida do alvo -> ${alvo.hp_atual}');
+    print('Dano -> $dano');
+
+    usuario.energia -= custo_energia;
+
+    if(alvo_hp < 0) {
+      alvo.hp_atual = 0;
+    } else {
+      alvo.hp_atual = alvo_hp;
+    }
+  }
+}
+
+class LancaChamas extends Habilidade {
+  LancaChamas() : super("Lança Chamas", 7);
+
+  void usar(Pokemon usuario, Pokemon alvo) {
+    if(usuario.energia < custo_energia) {
+      print('Seu pokemon nao tem energia o suficiente');
+      return;
+    }
+
+    var dano = usuario.calcular_ataque_base() + 7;
+    var alvo_hp = alvo.hp_atual - dano;
+
+    print('Vida do alvo -> ${alvo.hp_atual}');
+    print('Dano -> $dano');
+
+    usuario.energia -= custo_energia;
+
+    if(alvo_hp < 0) {
+      alvo.hp_atual = 0;
+    } else {
+      alvo.hp_atual = alvo_hp;
+    }
+  }
+}
+
 
 void main(List<String> arguments) {
   if (Platform.isWindows) { // Limpa tela sixseven aura farmer!
@@ -502,6 +598,7 @@ void main(List<String> arguments) {
   }
   print('===========================================================================');
 
+ // TESTE DA QUESTÃO 6
   var p6 = PokemonFogo(numero: 324, nome: "Torkoal", nivel: 1, hp_atual: 8, hp_maximo: 8, capturado: true);
   var p7 = PokemonAgua(numero: 693, nome: "Clawitzer", nivel: 2, hp_atual: 10, hp_maximo: 10, capturado: true);
   var p8 = PokemonEletrico(numero: 695, nome: "Heliolisk", nivel: 3, hp_atual: 14, hp_maximo: 14, capturado: true);
@@ -509,4 +606,35 @@ void main(List<String> arguments) {
   p6.exibir_ficha();
   p7.exibir_ficha();
   p8.exibir_ficha();
+
+  // TESTE DA QUESTÃO 7
+  print('\n================= TESTE DE HABILIDADES =================');
+
+  var pikachu = PokemonEletrico(numero: 25, nome: "Pikachu", nivel: 10, hp_atual: 30, hp_maximo: 30, capturado: true, energia: 50);
+  var squirtle = PokemonAgua(numero: 7, nome: "Squirtle", nivel: 5, hp_atual: 50, hp_maximo: 50, capturado: true, energia: 50);
+  var charmander = PokemonFogo(numero: 4, nome: "Charmander", nivel: 8, hp_atual: 40, hp_maximo: 40, capturado: true, energia: 50);
+
+  var choque = ChoqueDoTrovao();
+  var jato = JatoDAgua();
+  var lancaChamas = LancaChamas();
+
+  // Pikachu usa Choque do Trovão no Squirtle
+  print('\n${pikachu.nome} usa ${choque.nome} em ${squirtle.nome}!');
+  choque.usar(pikachu, squirtle);
+  print('HP do ${squirtle.nome}: ${squirtle.hp_atual}/${squirtle.hp_maximo}');
+  print('Energia do ${pikachu.nome}: ${pikachu.energia}');
+
+  // Squirtle usa Jato D'Agua no Charmander
+  print('\n${squirtle.nome} usa ${jato.nome} em ${charmander.nome}!');
+  jato.usar(squirtle, charmander);
+  print('HP do ${charmander.nome}: ${charmander.hp_atual}/${charmander.hp_maximo}');
+  print('Energia do ${squirtle.nome}: ${squirtle.energia}');
+
+  // Charmander usa Lança Chamas no Pikachu
+  print('\n${charmander.nome} usa ${lancaChamas.nome} em ${pikachu.nome}!');
+  lancaChamas.usar(charmander, pikachu);
+  print('HP do ${pikachu.nome}: ${pikachu.hp_atual}/${pikachu.hp_maximo}');
+  print('Energia do ${charmander.nome}: ${charmander.energia}');
+
+  print('\n==========================================================');
 }
