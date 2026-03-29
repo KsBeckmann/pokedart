@@ -458,6 +458,16 @@ class LancaChamas extends Habilidade {
   }
 }
 
+void executar_turno(Pokemon atacante, Pokemon defensor, Habilidade habilidade) {
+    print('${atacante.nome} usa ${habilidade.nome} em ${defensor.nome}');
+    habilidade.usar(atacante, defensor);
+    print('HP do ${defensor.nome}: ${defensor.hp_atual}/${defensor.hp_maximo}');
+
+    if(defensor.hp_atual == 0) {
+      print('${defensor.nome} foi derrotado!');
+    }
+}
+
 
 void main(List<String> arguments) {
   if (Platform.isWindows) { // Limpa tela sixseven aura farmer!
@@ -637,4 +647,17 @@ void main(List<String> arguments) {
   print('Energia do ${charmander.nome}: ${charmander.energia}');
 
   print('\n==========================================================');
+
+  // TESTE DA QUESTÃO 8
+  pikachu.curar(100);
+  squirtle.curar(100);
+  charmander.curar(100);
+
+  print('\n================= BATALHA =================');
+  executar_turno(pikachu, squirtle, choque);
+  print('');
+  executar_turno(squirtle, charmander, jato);
+  print('');
+  executar_turno(charmander, pikachu, lancaChamas);
+  print('\n=================================================');
 }
