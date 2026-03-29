@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class Pokemon {
   int _numero;
   String _nome;
@@ -171,7 +173,7 @@ class Pokemon {
 
 // QUESTÃO 4
 class Pokedex{
-  final List<Pokemon> _listaPokemons = [];
+  final List<Pokemon> _listaPokemons = []; // Actually o plural de pokemon eh pokemon (emote nerd)
 
 
   void adicionarPokemon(Pokemon p){
@@ -217,9 +219,35 @@ class Pokedex{
     }
     print('=======================================================');
   }
+
+// QUESTÃO 5
+  List<Pokemon> listar_capturados() {
+    // where() percorre a lista e retorna apenas os elementos que satisfazem a condição
+    return _listaPokemons.where((p) => p.capturado).toList();
+  }
+
+  List<Pokemon> listar_por_tipo(String tipo) {
+    var tipo_formatado = tipo.trim().toLowerCase();
+    return _listaPokemons.where((p) => p.tipo.trim().toLowerCase() == tipo_formatado).toList();
+  }
+
+  List<Pokemon> listar_acima_do_nivel(int nivel_minimo) {
+    return _listaPokemons.where((p) => p.nivel > nivel_minimo).toList();
+  }
+
+  List<Pokemon> listar_que_podem_evoluir() {
+    return _listaPokemons.where((p) => p.proxima_evolucao != null && p.nivel >= p.nivel_evolucao).toList();
+  }
 }
 
 void main(List<String> arguments) {
+  if (Platform.isWindows) { // Limpa tela sixseven aura farmer!
+    Process.runSync('cls', [], runInShell: true);
+  } else {
+    var result = Process.runSync('clear', []);
+    stdout.write(result.stdout);
+  }
+
   var psyduck = Pokemon(
     numero: 54,
     nome: 'Psyduck',
@@ -268,7 +296,6 @@ void main(List<String> arguments) {
   if (!mimikyu.curar(3)) return;
   if (!machop.curar(50)) return;
   // if (!machop.curar(-1)) return; // <--- erro!
-  
   print("===========================");
   print("===========================");
   print("===========================");
@@ -310,4 +337,45 @@ void main(List<String> arguments) {
   minhaPokedex.adicionarPokemon(p5);
 
   minhaPokedex.listarTodos();
+
+
+  // TESTE DA QUESTÃO 5
+  print('\n================= LISTA DE POKEMON *CAPTURADOS* =================');
+  for(var p in minhaPokedex.listar_capturados()) {
+    p.exibir_ficha();
+  }
+  print('====================================================================');
+
+  print('\n================= LISTA DE POKEMON *POR TIPO* =================');
+  print('\nTipo: planta\n');
+  for(var p in minhaPokedex.listar_por_tipo(" Planta ")) {
+    p.exibir_ficha();
+  }
+  print('\nTipo: psíquico\n');
+  for(var p in minhaPokedex.listar_por_tipo(" Psíquico ")) {
+    p.exibir_ficha();
+  }
+  print('================================================================');
+
+  print('\n================= LISTA DE POKEMON *POR NÍVEL* =================');
+  print('\nNível minimo: 9\n');
+  for(var p in minhaPokedex.listar_acima_do_nivel(9)) {
+    p.exibir_ficha();
+  }
+  print('===================================================================');
+
+  p1.proxima_evolucao = "Ivysaur"; // já pode evoluir
+  p1.nivel_evolucao = 16;
+  p1.subir_nivel(20);
+
+  p2.proxima_evolucao = "Charmeleon"; // ainda nao pode evoluir
+  p2.nivel_evolucao = 16;
+
+  print('\n================= LISTA DE POKEMON *QUE PODEM EVOLUIR* =================');
+  for(var p in minhaPokedex.listar_que_podem_evoluir()) {
+    p.exibir_ficha();
+    print('Nivel Atual: ${p.nivel}');
+    print('Evolui no nivel: ${p.nivel_evolucao}');
+  }
+  print('===========================================================================');
 }
