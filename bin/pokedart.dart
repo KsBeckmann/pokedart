@@ -169,6 +169,11 @@ class Pokemon {
 
   }
 
+  // Q6
+  int calcular_ataque_base() {
+    print('nao implementado');
+    return 0;
+  }
 }
 
 // QUESTÃO 4
@@ -237,6 +242,124 @@ class Pokedex{
 
   List<Pokemon> listar_que_podem_evoluir() {
     return _listaPokemons.where((p) => p.proxima_evolucao != null && p.nivel >= p.nivel_evolucao).toList();
+  }
+}
+
+// QUESTÃO 6
+class PokemonFogo extends Pokemon {
+  PokemonFogo({
+    required int numero,
+    required String nome,
+    required int nivel,
+    required int hp_atual,
+    required int hp_maximo,
+    required bool capturado,
+    String? proxima_evolucao,
+    int nivel_evolucao = 0,
+  }) : super(
+    numero: numero,
+    nome: nome,
+    tipo: "Fogo",
+    nivel: nivel,
+    hp_atual: hp_atual,
+    hp_maximo: hp_maximo,
+    capturado: capturado,
+    proxima_evolucao: proxima_evolucao,
+    nivel_evolucao: nivel_evolucao,
+  );
+
+  @override
+  int calcular_ataque_base() {
+    return _nivel * 3;
+  }
+
+  @override
+  void exibir_ficha() {
+    print('====== Pokemon: $_nome #$_numero ======');
+    print('Capturado: ${_capturado ? "Sim" : "Não"}');
+    print('Tipo: $_tipo');
+    print('Nível: $_nivel');
+    print('Hp: $_hp_atual/$_hp_maximo');
+    print('Tipo: Fogo'); // sobrescrita de exibir ficha com o tipo
+    print(' ');
+  }
+}
+
+class PokemonAgua extends Pokemon {
+  PokemonAgua({
+    required int numero,
+    required String nome,
+    required int nivel,
+    required int hp_atual,
+    required int hp_maximo,
+    required bool capturado,
+    String? proxima_evolucao,
+    int nivel_evolucao = 0,
+  }) : super(
+    numero: numero,
+    nome: nome,
+    tipo: "Agua",
+    nivel: nivel,
+    hp_atual: hp_atual,
+    hp_maximo: hp_maximo,
+    capturado: capturado,
+    proxima_evolucao: proxima_evolucao,
+    nivel_evolucao: nivel_evolucao,
+  );
+
+  @override
+  int calcular_ataque_base() {
+    return _nivel * 2 + 10;
+  }
+
+  @override
+  void exibir_ficha() {
+    print('====== Pokemon: $_nome #$_numero ======');
+    print('Capturado: ${_capturado ? "Sim" : "Não"}');
+    print('Tipo: $_tipo');
+    print('Nível: $_nivel');
+    print('Hp: $_hp_atual/$_hp_maximo');
+    print('Tipo: Água'); // sobrescrita de exibir ficha com o tipo
+    print(' ');
+  }
+}
+
+class PokemonEletrico extends Pokemon {
+  PokemonEletrico({
+    required int numero,
+    required String nome,
+    required int nivel,
+    required int hp_atual,
+    required int hp_maximo,
+    required bool capturado,
+    String? proxima_evolucao,
+    int nivel_evolucao = 0,
+  }) : super(
+    numero: numero,
+    nome: nome,
+    tipo: "Eletrico",
+    nivel: nivel,
+    hp_atual: hp_atual,
+    hp_maximo: hp_maximo,
+    capturado: capturado,
+    proxima_evolucao: proxima_evolucao,
+    nivel_evolucao: nivel_evolucao,
+  );
+
+  @override
+  int calcular_ataque_base() {
+    return _nivel * 2 + 15;
+  }
+
+  @override
+  void exibir_ficha() {
+    print('====== Pokemon: $_nome #$_numero ======');
+    print('Capturado: ${_capturado ? "Sim" : "Não"}');
+    print('Tipo: $_tipo');
+    print('Nível: $_nivel');
+    print('Hp: $_hp_atual/$_hp_maximo');
+    print('Tipo: Elétrico'); // sobrescrita de exibir ficha com o tipo
+    print(' ');
   }
 }
 
@@ -378,4 +501,12 @@ void main(List<String> arguments) {
     print('Evolui no nivel: ${p.nivel_evolucao}');
   }
   print('===========================================================================');
+
+  var p6 = PokemonFogo(numero: 324, nome: "Torkoal", nivel: 1, hp_atual: 8, hp_maximo: 8, capturado: true);
+  var p7 = PokemonAgua(numero: 693, nome: "Clawitzer", nivel: 2, hp_atual: 10, hp_maximo: 10, capturado: true);
+  var p8 = PokemonEletrico(numero: 695, nome: "Heliolisk", nivel: 3, hp_atual: 14, hp_maximo: 14, capturado: true);
+
+  p6.exibir_ficha();
+  p7.exibir_ficha();
+  p8.exibir_ficha();
 }
