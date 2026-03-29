@@ -277,6 +277,38 @@ class Pokedex{
   List<Pokemon> listar_que_podem_evoluir() {
     return _listaPokemons.where((p) => p.proxima_evolucao != null && p.nivel >= p.nivel_evolucao).toList();
   }
+
+  // QUESTÃO 11
+  int total_pokemons() {
+    return _listaPokemons.length;
+  }
+
+  Map<String, int> quantidade_por_tipo() {
+    Map<String, int> mapa = {};
+    for (var p in _listaPokemons) {
+      var tipo = p.tipo.toLowerCase();
+      mapa[tipo] = (mapa[tipo] ?? 0) + 1;
+    }
+    return mapa;
+  }
+
+  double media_de_nivel() {
+    if (_listaPokemons.isEmpty) return 0;
+    int soma = 0;
+    for (var p in _listaPokemons) {
+      soma += p.nivel;
+    }
+    return soma / total_pokemons();
+  }
+
+  double percentual_capturados() {
+    if (_listaPokemons.isEmpty) return 0;
+    int quantidade_capturados = 0;
+    for (var p in _listaPokemons) {
+      if (p.capturado) { quantidade_capturados += 1; }
+    }
+    return (quantidade_capturados / total_pokemons()) * 100;
+  }
 }
 
 // QUESTÃO 6
@@ -734,7 +766,7 @@ void main(List<String> arguments) {
   rattata.hp_atual = 100;
   rattata.favoritar();
 
-  print('\n================= TESTE INTERFACE =================');
+  print('\n================= TESTE FUNÇÃO ANONIMA =================');
   var pokemons = minhaPokedex.pokemons;
 
   // Filtrar pokemons com hp abaixo de 30
@@ -764,5 +796,27 @@ void main(List<String> arguments) {
   for(var p in favoritos) {
     print(p.nome);
   }
+  print('\n=====================================================');
+
+  // TESTE DA QUESTÃO 11
+  print('\n================= TESTE ESTATISTICAS DA POKEDEX =================');
+  print('Total pokemons: ${minhaPokedex.total_pokemons()}');
+
+  print('');
+  
+  print('Quantidade de pokemon por tipo');
+  var porTipo = minhaPokedex.quantidade_por_tipo();
+  porTipo.forEach((tipo, quantidade) {
+    print('$tipo: $quantidade');
+  });
+
+  print('');
+
+  print('Media de nivel: ${minhaPokedex.media_de_nivel().toStringAsFixed(2)}');
+
+  print('');
+
+  print('Porcentagem de pokemons capturados: ${minhaPokedex.percentual_capturados().toStringAsFixed(2)}%');
+
   print('\n=====================================================');
 }
