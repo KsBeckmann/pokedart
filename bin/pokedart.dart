@@ -213,6 +213,7 @@ class Pokemon implements RegistravelNaPokedex { // implements adicionado para a 
 class Pokedex{
   final List<Pokemon> _listaPokemons = []; // Actually o plural de pokemon eh pokemon (emote nerd)
 
+  List<Pokemon> get pokemons => _listaPokemons;
 
   void adicionarPokemon(Pokemon p){
     bool jaExiste = _listaPokemons.any((poke) => poke.numero == p.numero);
@@ -725,4 +726,43 @@ void main(List<String> arguments) {
   print('${rattata.nome} favorito: ${rattata.favorito}');
 
   print('\n=========================================================');
+
+
+  // TESTE DA QUESTÃO 10
+  minhaPokedex.adicionarPokemon(rattata);
+  rattata.hp_maximo = 100;
+  rattata.hp_atual = 100;
+  rattata.favoritar();
+
+  print('\n================= TESTE INTERFACE =================');
+  var pokemons = minhaPokedex.pokemons;
+
+  // Filtrar pokemons com hp abaixo de 30
+  print('\n---- Hp abaixo de 30 ----');
+  var hp_baixo = pokemons.where((p) => p.hp_atual < 30).toList();
+  for (var p in hp_baixo) {
+    print('${p.nome} - HP: ${p.hp_atual}');
+  }
+
+  // Ordernar ordem alfabetica
+  print('\n---- Ordem Alfabetica ----');
+  var por_nome = List<Pokemon>.from(pokemons)..sort((a,b) => a.nome.compareTo(b.nome));
+  for (var p in por_nome) {
+    print(p.nome);
+  }
+
+  // Ordenar por nivel em ordem decrescente
+  print('\n---- Nivel decrescente ----');
+  var por_nivel = List<Pokemon>.from(pokemons)..sort((a,b) => b.nivel.compareTo(a.nivel));
+  for (var p in por_nivel) {
+    print('${p.nome} - Nivel: ${p.nivel}');
+  }
+
+  // Selecionar apenas favoritos
+  print('\n ---- Favoritos ----');
+  var favoritos = pokemons.where((p) => p.favorito).toList();
+  for(var p in favoritos) {
+    print(p.nome);
+  }
+  print('\n=====================================================');
 }
