@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class Pokemon {
+class Pokemon implements RegistravelNaPokedex { // implements adicionado para a q9
   int _numero;
   String _nome;
   String _tipo;
@@ -15,6 +15,10 @@ class Pokemon {
 
   // Atributo energia (q7)
   int energia;
+
+  // Q8
+  bool _visto = false;
+  bool _favorito = false;
 
   Pokemon({
     required int numero,
@@ -57,6 +61,8 @@ class Pokemon {
   int get hp_atual => _hp_atual;
   int get hp_maximo => _hp_maximo;
   bool get capturado => _capturado;
+  bool get visto => _visto;
+  bool get favorito => _favorito;
 
   // Setters
   set numero(int valor) => _numero = valor;
@@ -177,6 +183,29 @@ class Pokemon {
   int calcular_ataque_base() {
     print('nao implementado');
     return 0;
+  }
+
+  // Q9
+  void marcar_como_visto() {
+    _visto = true;
+  }
+
+  void marcar_como_capturado() {
+    this.marcar_como_visto();
+    _capturado = true;
+  }
+
+  void favoritar() {
+    if(!capturado) {
+      print('Você não pode favoritar um pokemon que ainda não foi capturado!');
+      return;
+    }
+
+    _favorito = true;
+  }
+
+  void desfavoritar() {
+    _favorito = false;
   }
 }
 
@@ -458,6 +487,7 @@ class LancaChamas extends Habilidade {
   }
 }
 
+// QUESTÃO 8
 void executar_turno(Pokemon atacante, Pokemon defensor, Habilidade habilidade) {
     print('${atacante.nome} usa ${habilidade.nome} em ${defensor.nome}');
     habilidade.usar(atacante, defensor);
@@ -468,6 +498,13 @@ void executar_turno(Pokemon atacante, Pokemon defensor, Habilidade habilidade) {
     }
 }
 
+// QUESTÃO 9
+abstract class RegistravelNaPokedex {
+  void marcar_como_visto();
+  void marcar_como_capturado();
+  void favoritar();
+  void desfavoritar();
+}
 
 void main(List<String> arguments) {
   if (Platform.isWindows) { // Limpa tela sixseven aura farmer!
@@ -660,4 +697,32 @@ void main(List<String> arguments) {
   print('');
   executar_turno(charmander, pikachu, lancaChamas);
   print('\n=================================================');
+
+  // TESTE DA QUESTÃO 9
+  print('\n================= TESTE INTERFACE =================');
+
+  var rattata = PokemonFogo(numero: 19, nome: "Rattata", nivel: 5, hp_atual: 15, hp_maximo: 15, capturado: false);
+
+  // Tentar favoritar sem capturar
+  print('Tentando favoritar ${rattata.nome} sem capturar...');
+  rattata.favoritar();
+
+  // Marcar como visto
+  rattata.marcar_como_visto();
+  print('${rattata.nome} visto: ${rattata.visto}');
+
+  // Capturar (deve marcar como visto automaticamente)
+  rattata.marcar_como_capturado();
+  print('${rattata.nome} capturado: ${rattata.capturado}');
+  print('${rattata.nome} visto: ${rattata.visto}');
+
+  // Agora favoritar (já foi capturado)
+  rattata.favoritar();
+  print('${rattata.nome} favorito: ${rattata.favorito}');
+
+  // Desfavoritar
+  rattata.desfavoritar();
+  print('${rattata.nome} favorito: ${rattata.favorito}');
+
+  print('\n=========================================================');
 }
