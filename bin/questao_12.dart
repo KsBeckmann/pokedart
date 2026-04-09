@@ -1,9 +1,10 @@
 part of 'pokedart.dart';
 
+// Questão 12 — desafio final: simulação completa juntando todas as questões
 void questao_12() {
-  // QUESTAO 12 -- DESAFIO FINAL
   var pokedex = Pokedex();
 
+  // Questão 12 — cadastro de pelo menos 8 pokémons de pelo menos 3 tipos diferentes
   var bulbasaur = Pokemon(
     numero: 1,
     nome: 'Bulbasaur',
@@ -88,19 +89,23 @@ void questao_12() {
   pokedex.adicionarPokemon(torkoal);
   pokedex.adicionarPokemon(clawitzer);
 
+  // Questão 12 — marcar alguns como vistos
   bulbasaur.marcar_como_visto();
   mewtwo.marcar_como_visto();
   gengar.marcar_como_visto();
 
+  // Questão 12 — marcar alguns como capturados
   charmander.marcar_como_capturado();
   squirtle.marcar_como_capturado();
   pikachu.marcar_como_capturado();
   torkoal.marcar_como_capturado();
   clawitzer.marcar_como_capturado();
 
+  // Questão 12 — favoritar pelo menos 2
   pikachu.favoritar();
   torkoal.favoritar();
 
+  // Questão 12 — aplicar todos os filtros da questão 5
   print('\n--- Capturados ---');
   for (var p in pokedex.listar_capturados()) {
     print(p.nome);
@@ -122,9 +127,11 @@ void questao_12() {
     print(p.nome);
   }
 
+  // Questão 12 — realizar pelo menos 1 evolução
   print('');
   bulbasaur.evoluir();
 
+  // Questão 12 — simular pelo menos 2 batalhas com habilidades
   print('\n--- Batalhas ---');
   var choque = ChoqueDoTrovao();
   var lancaChamas = LancaChamas();
@@ -133,6 +140,7 @@ void questao_12() {
   print('');
   executar_turno(charmander, clawitzer, lancaChamas);
 
+  // Questão 12 — exibir estatísticas finais
   print('\n--- Estatisticas ---');
   print('Total: ${pokedex.total_pokemons()}');
   pokedex.quantidade_por_tipo().forEach((tipo, qtd) {

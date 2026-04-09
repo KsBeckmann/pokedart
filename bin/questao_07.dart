@@ -1,6 +1,6 @@
 part of 'pokedart.dart';
 
-// QUESTAO 7
+// Questão 7 — classe abstrata Habilidade com o método abstrato usar()
 abstract class Habilidade {
   String nome = '';
   int custo_energia = 0;
@@ -10,6 +10,7 @@ abstract class Habilidade {
   void usar(Pokemon usuario, Pokemon alvo);
 }
 
+// Questão 7 — ChoqueDoTrovao: dano = ataque base + 5, custo 5 de energia
 class ChoqueDoTrovao extends Habilidade {
   ChoqueDoTrovao() : super('Choque do trovao', 5);
 
@@ -36,6 +37,7 @@ class ChoqueDoTrovao extends Habilidade {
   }
 }
 
+// Questão 7 — JatoDAgua: dano = ataque base + 3, custo 3 de energia
 class JatoDAgua extends Habilidade {
   JatoDAgua() : super("Jato D'Agua", 3);
 
@@ -62,6 +64,7 @@ class JatoDAgua extends Habilidade {
   }
 }
 
+// Questão 7 — LancaChamas: dano = ataque base + 7, custo 7 de energia
 class LancaChamas extends Habilidade {
   LancaChamas() : super('Lanca Chamas', 7);
 

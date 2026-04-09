@@ -1,27 +1,13 @@
-/*
-Questão 1 — Cadastro básico de Pokémon
-Crie uma classe Pokemon com os seguintes atributos obrigatórios: 
-   •int numero 
-   •String nome 
-   •String tipo 
-   •int nivel 
-   •int hpAtual 
-   •int hpMaximo 
-   •bool capturado 
-Implemente um construtor que receba todos esses valores. 
-Depois,  crie  um  método  exibirFicha()  que  mostre  todas  as  informações  do  pokémon  de  forma organizada. 
-No main(), instancie exatamente 3 pokémons diferentes e exiba a ficha de cada um. 
-Restrições:
-   •nivel deve começar entre 1 e 100. 
-   •hpAtual não pode ser maior que hpMaximo. 
-   •hpMaximo deve ser maior que 0. 
-*/
-
 part of 'pokedart.dart';
 
-// Definindo a classe e implementando uma Interface (contrato de regras)
+// Questão 1 — classe Pokemon com os atributos e o construtor
+// Questão 2 — atributos privados, getters, setters e métodos com validação
+// Questão 3 — atributos de evolução e método evoluir()
+// Questão 9 — implementa a interface RegistravelNaPokedex
+
 class Pokemon implements RegistravelNaPokedex {
-  // Atributos Privados (o '_' impede que sejam alterados sem passar pelos validadores)
+
+  // Questão 2 — atributos privados (encapsulamento)
   int _numero;
   String _nome;
   String _tipo;
@@ -30,16 +16,18 @@ class Pokemon implements RegistravelNaPokedex {
   int _hp_maximo;
   bool _capturado;
 
-  // Variáveis extras das questões da lista
-  String? proxima_evolucao; // O '?' significa que pode ser nulo (se não tiver mais evolução)
+  // Questão 3 — atributos de evolução
+  String? proxima_evolucao;
   int nivel_evolucao;
+
+  // Questão 7 — campo de energia usado pelas habilidades
   int energia;
 
-  // Status de controle da Pokedex
+  // Questão 9 — campos de status da pokédex
   bool _visto = false;
   bool _favorito = false;
 
-  // CONSTRUTOR: Onde o Pokémon "nasce"
+  // Questão 1 — construtor recebendo todos os atributos obrigatórios
   Pokemon({
     required int numero,
     required String nome,
@@ -58,8 +46,8 @@ class Pokemon implements RegistravelNaPokedex {
        _hp_atual = hp_atual,
        _hp_maximo = hp_maximo,
        _capturado = capturado {
-    
-    // Travas de segurança: Não deixa criar Pokémon com dados impossíveis
+
+    // Questão 1 — validações das restrições
     if (_nivel < 1 || _nivel > 100) {
       throw ArgumentError('Nivel deve estar entre 1 e 100!');
     }
@@ -73,7 +61,7 @@ class Pokemon implements RegistravelNaPokedex {
     }
   }
 
-  // GETTERS: Para a gente conseguir ler os dados privados no main.dart
+  // Questão 2 — getters para leitura dos atributos privados
   int get numero => _numero;
   String get nome => _nome;
   String get tipo => _tipo;
@@ -84,7 +72,7 @@ class Pokemon implements RegistravelNaPokedex {
   bool get visto => _visto;
   bool get favorito => _favorito;
 
-  // SETTERS: Para mudar os valores com segurança
+  // Questão 2 — setters com validação
   set numero(int valor) => _numero = valor;
   set nome(String valor) => _nome = valor;
   set tipo(String valor) => _tipo = valor;
@@ -112,7 +100,7 @@ class Pokemon implements RegistravelNaPokedex {
 
   set capturado(bool valor) => _capturado = valor;
 
-  // Método para printar as infos no console
+  // Questão 1 — método que exibe as informações do pokémon
   void exibir_ficha() {
     print('====== Pokemon: $_nome #$_numero ======');
     print('Capturado: ${_capturado ? "Sim" : "Nao"}');
@@ -122,7 +110,7 @@ class Pokemon implements RegistravelNaPokedex {
     print(' ');
   }
 
-  // Lógica para subir de nível
+  // Questão 2 — método para subir de nível com validação
   bool subir_nivel(int quantidade) {
     if (quantidade < 0) {
       print('Quantidade nao pode ser negativa');
@@ -130,7 +118,7 @@ class Pokemon implements RegistravelNaPokedex {
     }
 
     try {
-      nivel = _nivel + quantidade; // Usa o 'set nivel' para validar se passa de 100
+      nivel = _nivel + quantidade;
     } catch (e) {
       print('Falha ao subir nivel: $e');
       return false;
@@ -138,7 +126,7 @@ class Pokemon implements RegistravelNaPokedex {
     return true;
   }
 
-  // Lógica de combate (diminuir HP)
+  // Questão 2 — método para receber dano sem deixar o HP negativo
   bool receber_dano(int dano) {
     if (dano < 0) {
       print('Dano nao pode ser negativo');
@@ -146,14 +134,14 @@ class Pokemon implements RegistravelNaPokedex {
     }
 
     if (dano >= _hp_atual) {
-      _hp_atual = 0; // Pokémon desmaiou, o HP não fica negativo
+      _hp_atual = 0;
     } else {
       _hp_atual = _hp_atual - dano;
     }
     return true;
   }
 
-  // Lógica de cura (o HP não pode passar do máximo permitido)
+  // Questão 2 — método de cura sem deixar o HP passar do máximo
   bool curar(int valor) {
     if (valor < 0) {
       print('Cura nao pode ser negativa');
@@ -169,16 +157,14 @@ class Pokemon implements RegistravelNaPokedex {
     return true;
   }
 
-  // Lógica de Evolução: Muda o nome e ganha um "buff" de HP
+  // Questão 3 — método de evolução com todas as regras
   void evoluir() {
-    // Se for null, é porque é a última evolução da linha
     if (proxima_evolucao == null) {
       print('$nome nao possui mais evolucoes programadas.');
       print('');
       return;
     }
 
-    // Verifica se o nível atual é o necessário
     if (_nivel < nivel_evolucao) {
       print('$nome nao consegue evoluir');
       print('Nivel atual: $_nivel');
@@ -189,11 +175,11 @@ class Pokemon implements RegistravelNaPokedex {
 
     var nomeAntigo = _nome;
 
-    _nome = proxima_evolucao!; // O '!' diz que temos certeza que não é nulo aqui
-    proxima_evolucao = null; // Remove a evolução atual (já evoluiu)
+    _nome = proxima_evolucao!;
+    proxima_evolucao = null;
 
-    _hp_maximo += 20; // Bônus de evolução
-    _hp_atual = hp_maximo; // Cura o Pokémon ao evoluir
+    _hp_maximo += 20;
+    _hp_atual = hp_maximo;
 
     print('==== EVOLUCAO ! ====');
     print('$nomeAntigo evoluiu para $nome');
@@ -202,13 +188,13 @@ class Pokemon implements RegistravelNaPokedex {
     print('');
   }
 
-  // Placeholder para uma funcionalidade futura
+  // Questão 6 — método base de ataque (sobrescrito nas subclasses)
   int calcular_ataque_base() {
     print('nao implementado');
     return 0;
   }
 
-  // MÉTODOS DA INTERFACE: Implementando o que a Pokedex exige
+  // Questão 9 — implementação dos métodos da interface
   @override
   void marcar_como_visto() {
     _visto = true;
@@ -216,13 +202,12 @@ class Pokemon implements RegistravelNaPokedex {
 
   @override
   void marcar_como_capturado() {
-    marcar_como_visto(); // Se capturou, obviamente ele também viu
+    marcar_como_visto();
     _capturado = true;
   }
 
   @override
   void favoritar() {
-    // Regra: Só favorita se o bicho estiver na sua coleção
     if (!capturado) {
       print('Voce nao pode favoritar um pokemon que ainda nao foi capturado!');
       return;

@@ -1,6 +1,8 @@
 part of 'pokedart.dart';
 
-// QUESTAO 6
+// Questão 6 — subclasses de Pokemon por tipo, com herança e sobrescrita de métodos
+
+// Questão 6 — PokemonFogo: ataque base = nivel * 3
 class PokemonFogo extends Pokemon {
   PokemonFogo({
     required int numero,
@@ -42,6 +44,7 @@ class PokemonFogo extends Pokemon {
   }
 }
 
+// Questão 6 — PokemonAgua: ataque base = nivel * 2 + 10
 class PokemonAgua extends Pokemon {
   PokemonAgua({
     required int numero,
@@ -83,6 +86,7 @@ class PokemonAgua extends Pokemon {
   }
 }
 
+// Questão 6 — PokemonEletrico: ataque base = nivel * 2 + 15
 class PokemonEletrico extends Pokemon {
   PokemonEletrico({
     required int numero,
